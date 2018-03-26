@@ -1,0 +1,23 @@
+{
+    "name": "fabacino/php-debug-functions",
+    "description": "Debug functions for PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabian Wiget",
+            "email": "fabacino@gmail.com"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "^1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fabacino\\Debug\\": "src"
+        },
+        "files": [
+            "src/debug-functions.php"
+        ]
+    }
+}
