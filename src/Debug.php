@@ -27,9 +27,9 @@ class Debug
     /**
      * Default values for Monolog options.
      */
-    private const CHANNEL_NAME = 'fabacino/debug';
-    private const OUTPUT_FORMAT = "%datetime%: %message%\n";
-    private const DATE_FORMAT = null;
+    const CHANNEL_NAME = 'fabacino/debug';
+    const OUTPUT_FORMAT = "%datetime%: %message%\n";
+    const DATE_FORMAT = null;
 
     /**
      * Default flags for tweaking the output.
@@ -74,7 +74,7 @@ class Debug
     public static function getInstance(): Debug
     {
         if (self::$Instance === null) {
-            static::init(0, self::initLogger());
+            static::init();
         }
         return self::$Instance;
     }
@@ -98,7 +98,7 @@ class Debug
      *
      * @return void
      */
-    public static function init(array $settings = []): void
+    public static function init(array $settings = [])
     {
         $defaultFlags = 0;
         if (isset($settings['use_vardump']) && $settings['use_vardump']) {
@@ -156,7 +156,7 @@ class Debug
      *
      * @return void
      */
-    public function printValue($var, int $flags = null): void
+    public function printValue($var, int $flags = null)
     {
         if ($flags === null) {
             $flags = $this->defaultFlags;
@@ -209,7 +209,7 @@ class Debug
      *
      * @return mixed
      */
-    public function logValue($var, int $flags = null): void
+    public function logValue($var, int $flags = null)
     {
         $this->Logger->addDebug(static::debugValue($var, $flags));
     }

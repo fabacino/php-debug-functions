@@ -19,7 +19,7 @@ use Fabacino\Debug\Debug;
  *
  * @return void
  */
-function dbg($var, int $flags = null): void
+function dbg($var, int $flags = null)
 {
     Debug::getInstance()->printValue($var, $flags);
 }
@@ -45,7 +45,7 @@ function dbgr($var, int $flags = null)
  *
  * @return void
  */
-function dbglog($var, int $flags = null): void
+function dbglog($var, int $flags = null)
 {
     Debug::getInstance()->logValue($var, $flags);
 }

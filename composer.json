@@ -10,7 +10,11 @@
         }
     ],
     "require": {
+        "php": ">=7.0",
         "monolog/monolog": "^1.23"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -19,5 +23,10 @@
         "files": [
             "src/debug-functions.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fabacino\\Debug\\Test\\": "tests"
+        }
     }
 }
