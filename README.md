@@ -1,2 +1,3 @@
-# php-debug-functions
-Debug functions for PHP
+# Debug functions for PHP
+
+[![Build Status](https://travis-ci.org/fabacino/php-debug-functions.svg?branch=master)](https://travis-ci.org/fabacino/php-debug-functions)
