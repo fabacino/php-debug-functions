@@ -154,7 +154,7 @@ class Debug
         }
 
         $output = static::debugValue($var, $flags);
-        if (PHP_SAPI !== 'cli') {
+        if (!$this->isCli()) {
             $output = "<pre>{$output}</pre>";
         }
         echo $output;
@@ -203,5 +203,15 @@ class Debug
     public function logValue($var, int $flags = null)
     {
         $this->Logger->addDebug(static::debugValue($var, $flags));
+    }
+
+    /**
+     * Check whether we are in a CLI environment.
+     *
+     * @return bool
+     */
+    protected function isCli(): bool
+    {
+        return substr(PHP_SAPI, 0, 3) === 'cli';
     }
 }

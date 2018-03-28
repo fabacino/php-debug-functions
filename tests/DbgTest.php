@@ -1,10 +1,16 @@
 <?php
 
-namespace Fabacino\Debug\Test;
-
 /**
  * Tests for function `dbg`.
+ *
+ * @copyright Fabian Wiget <fabacino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
+namespace Fabacino\Debug\Test;
+
 class DbgTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -45,6 +51,27 @@ Array
     [2] => third
 )
 
+EOT;
+        $this->assertEquals($expected, $this->captureOutput($var));
+    }
+
+    /**
+     * Test printing output in non-CLI environment.
+     *
+     * @return void
+     */
+    public function testPrintArrayNonCli()
+    {
+        TestDebug::init();
+        $var = ['first', 'second', 'third'];
+        $expected = <<<'EOT'
+<pre>Array
+(
+    [0] => first
+    [1] => second
+    [2] => third
+)
+</pre>
 EOT;
         $this->assertEquals($expected, $this->captureOutput($var));
     }
