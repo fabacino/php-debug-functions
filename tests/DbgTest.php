@@ -8,7 +8,9 @@ namespace Fabacino\Debug\Test;
 class DbgTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * Test printing number
+     * Test printing number.
+     *
+     * @return void
      */
     public function testPrintNumber()
     {
@@ -17,7 +19,9 @@ class DbgTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test printing string
+     * Test printing string.
+     *
+     * @return void
      */
     public function testPrintString()
     {
@@ -26,7 +30,9 @@ class DbgTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test printing output
+     * Test printing output.
+     *
+     * @return void
      */
     public function testPrintArray()
     {
@@ -47,11 +53,11 @@ EOT;
      * Capture and return output of function `dbg`.
      *
      * @param mixed  $var    The variable to analyse.
-     * @param mixed  $flags  Flags for tweaking the output.
+     * @param int    $flags  Flags for tweaking the output.
      *
      * @return string
      */
-    private function captureOutput($var, $flags = null)
+    private function captureOutput($var, int $flags = null)
     {
         ob_start();
         dbg($var, $flags);
