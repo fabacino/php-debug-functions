@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * Tests for function `dbgr`.
+ *
+ * @copyright Fabian Wiget <fabacino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Fabacino\Debug\Test;
 
 use Fabacino\Debug\Debug;
 
-/**
- * Tests for function `dbgr`.
- */
 class DbgrTest extends \PHPUnit\Framework\TestCase
 {
     /**
