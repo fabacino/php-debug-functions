@@ -50,6 +50,27 @@ EOT;
     }
 
     /**
+     * Test printing output in non-CLI environment.
+     *
+     * @return void
+     */
+    public function testPrintArrayNonCli()
+    {
+        TestDebug::init();
+        $var = ['first', 'second', 'third'];
+        $expected = <<<'EOT'
+<pre>Array
+(
+    [0] => first
+    [1] => second
+    [2] => third
+)
+</pre>
+EOT;
+        $this->assertEquals($expected, $this->captureOutput($var));
+    }
+
+    /**
      * Capture and return output of function `dbg`.
      *
      * @param mixed  $var    The variable to analyse.
