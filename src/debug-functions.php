@@ -12,6 +12,19 @@
 use Fabacino\Debug\Debug;
 
 /**
+ * Initialize singleton instance.
+ *
+ * @param array  $settings  Settings.
+ *
+ * @return void
+ * @see    Debug::init()
+ */
+function dbginit(array $settings = [])
+{
+    Debug::init($settings);
+}
+
+/**
  * Print debug value
  *
  * @param mixed     $var    The variable to analyse.
