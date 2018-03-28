@@ -87,12 +87,10 @@ class Debug
      *  - use_vardump: Use vardump for debug output? (boolean, default = false)
      *  - use_htmlentities: Use htmlentities for debug output? (boolean, default = false)
      *  - log_file: The log file. (string, default = null)
-     *  - monolog: Settings for Monolog logger. (array, default = [])
-     *      - channel_name: The name of the channel. (string, default = self::CHANNEL_NAME)
-     *      - output_format: The output format. (string, default = self::OUTPUT_FORMAT)
-     *      - date_format: The date format. (string, default = self::DATE_FORMAT)
+     *  - logger: The logger to use. (Logger, default = null)
      *
-     * The settings `log_file` and `monolog` are only used when calling `logValue()`.
+     * The settings `log_file` and `logger` are only used when calling `logValue()`.
+     * If `logger` is specified, `log_file` will be ignored.
      *
      * @param array  $settings  Settings.
      *
@@ -108,44 +106,37 @@ class Debug
             $defaultFlags |= self::USE_HTMLENTITIES;
         }
 
-        self::$Instance = new static($defaultFlags, self::initLogger($settings));
+        if (isset($settings['logger']) && $settings['logger'] instanceof Logger) {
+            $Logger = $settings['logger'];
+        } else {
+            if (isset($settings['log_file'])) {
+                $Stream = self::initStream($settings['log_file']);
+            } else {
+                // We didn't get any file to log.
+                $Stream = new NullHandler(Logger::DEBUG);
+            }
+
+            $Logger = new Logger(self::CHANNEL_NAME);
+            $Logger->pushHandler($Stream);
+        }
+
+        self::$Instance = new static($defaultFlags, $Logger);
     }
 
     /**
-     * Create Monolog logger.
+     * Create stream handler for logger.
      *
-     * @param array  $settings  Settings.
+     * @param string  $logFile  The log file.
      *
-     * @return Logger
-     * @see    init()
+     * @return StreamHandler
      */
-    private static function initLogger(array $settings = []): Logger
+    private static function initStream(string $logFile): StreamHandler
     {
-        if (isset($settings['monolog']) && is_array($settings['monolog'])) {
-            $monologSettings = $settings['monolog'];
-        } else {
-            $monologSettings = [];
-        }
-
-        if (isset($settings['log_file'])) {
-            // Use default values if not specified otherwise.
-            if (array_key_exists('output_format', $monologSettings)) {
-                $output = $monologSettings['output_format'];
-            } else {
-                $output = self::OUTPUT_FORMAT;
-            }
-            $dateFormat = $monologSettings['date_format'] ?? self::DATE_FORMAT;
-
-            $Stream = new StreamHandler($settings['log_file'], Logger::DEBUG);
-            $Stream->setFormatter(new LineFormatter($output, $dateFormat, true));
-        } else {
-            // We didn't get any file to log.
-            $Stream = new NullHandler(Logger::DEBUG);
-        }
-
-        $Logger = new Logger($monologSettings['channel_name'] ?? self::CHANNEL_NAME);
-        $Logger->pushHandler($Stream);
-        return $Logger;
+        $Stream = new StreamHandler($logFile, Logger::DEBUG);
+        $Stream->setFormatter(
+            new LineFormatter(self::OUTPUT_FORMAT, self::DATE_FORMAT, true)
+        );
+        return $Stream;
     }
 
     /**
