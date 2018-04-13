@@ -1,12 +1,9 @@
 <?php
-
-/**
- * Settings for use in debug functions.
+/*
+ * © Fabian Wiget <fabacino@gmail.com>
  *
- * @copyright Fabian Wiget <fabacino@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
 
 namespace Fabacino\Debug;
@@ -16,6 +13,9 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 
+/**
+ * Main class.
+ */
 class Debug
 {
     /**

@@ -1,16 +1,16 @@
 <?php
-
-/**
- * Debug class for testing.
+/*
+ * © Fabian Wiget <fabacino@gmail.com>
  *
- * @copyright Fabian Wiget <fabacino@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
 
 namespace Fabacino\Debug\Test;
 
+/**
+ * Debug class for testing.
+ */
 class TestDebug extends \Fabacino\Debug\Debug
 {
     /**
