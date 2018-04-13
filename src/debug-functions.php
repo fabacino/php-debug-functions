@@ -63,3 +63,31 @@ function dbglog($var, int $flags = null)
 {
     Debug::getInstance()->logValue($var, $flags);
 }
+
+/**
+ * Print debug value and die.
+ *
+ * @param mixed     $var    The variable to analyse.
+ * @param int|null  $flags  Flags for tweaking the output.
+ *
+ * @return void
+ * @codeCoverageIgnore
+ */
+function dbgdie($var, int $flags = null)
+{
+    dbg($var, $flags);
+    exit;
+}
+
+/**
+ * Throw exception with debug value.
+ *
+ * @param mixed     $var    The variable to analyse.
+ * @param int|null  $flags  Flags for tweaking the output.
+ *
+ * @return void
+ */
+function dbgthrow($var, int $flags = null)
+{
+    throw new \Exception(dbgr($var, $flags));
+}
