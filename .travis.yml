@@ -11,7 +11,7 @@ install:
   - composer install
 
 script:
-  - vendor/bin/phpunit --whitelist=src --coverage-clover=coverage.xml tests
+  - vendor/bin/phpunit
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
