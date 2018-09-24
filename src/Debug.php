@@ -1,9 +1,12 @@
 <?php
+
 /*
- * © Fabian Wiget <fabacino@gmail.com>
+ * This file is part of the php-debug-functions package.
  *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
+ * (c) Fabian Wiget <fabacino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Fabacino\Debug;
