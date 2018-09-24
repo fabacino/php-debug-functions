@@ -45,7 +45,6 @@ dbg([
 a string
 Array
 (
-    [id] => 123
     [token] => dp83kspo
     [is_default] => true
 )
@@ -105,10 +104,10 @@ dbginit(['log_file' => '/path/to/logfile']);
 dbglog($this->doSomething());
 ```
  
- Alternatively you can pass your own monolog logger instance:
+Alternatively you can pass your own PSR-3 compatible logger:
  
 ```php
-$logger = new Logger('channel-name');
+$logger = new YourLogger();
 ...
 dbginit(['logger' => $logger]);
 dbglog($this->doSomething());

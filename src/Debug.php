@@ -11,10 +11,8 @@
 
 namespace Fabacino\Debug;
 
-use Monolog\Logger;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
+use Fabacino\Debug\Logger;
+use Psr\Log\LoggerInterface;
 
 /**
  * Main class.
@@ -28,13 +26,6 @@ class Debug
     const USE_HTMLENTITIES = 2;
 
     /**
-     * Default values for Monolog options.
-     */
-    const CHANNEL_NAME = 'fabacino/debug';
-    const OUTPUT_FORMAT = "%datetime%: %message%\n";
-    const DATE_FORMAT = null;
-
-    /**
      * Default flags for tweaking the output.
      *
      * @var int
@@ -42,9 +33,9 @@ class Debug
     private $defaultFlags;
 
     /**
-     * Monolog logger.
+     * The logger instance.
      *
-     * @var Logger
+     * @var LoggerInterface
      */
     private $Logger;
 
@@ -58,12 +49,12 @@ class Debug
     /**
      * Constructor.
      *
-     * @param int     $defaultFlags  Default flags for tweaking the output.
-     * @param Logger  $Logger        The monolog logger.
+     * @param int              $defaultFlags  Default flags for tweaking the output.
+     * @param LoggerInterface  $Logger        The logger instance.
      *
      * @return void
      */
-    private function __construct(int $defaultFlags, Logger $Logger)
+    private function __construct(int $defaultFlags, LoggerInterface $Logger)
     {
         $this->defaultFlags = $defaultFlags;
         $this->Logger = $Logger;
@@ -90,10 +81,11 @@ class Debug
      *  - use_vardump: Use vardump for debug output? (boolean, default = false)
      *  - use_htmlentities: Use htmlentities for debug output? (boolean, default = false)
      *  - log_file: The log file. (string, default = null)
-     *  - logger: The logger to use. (Logger, default = null)
+     *  - logger: The logger to use. (LoggerInterface, default = null)
      *
      * The settings `log_file` and `logger` are only used when calling `logValue()`.
-     * If `logger` is specified, `log_file` will be ignored.
+     * If `logger` is specified, `log_file` will be ignored. If neither is present,
+     * nothing will be logged.
      *
      * @param array  $settings  Settings.
      *
@@ -102,6 +94,7 @@ class Debug
     public static function init(array $settings = [])
     {
         $defaultFlags = 0;
+
         if (isset($settings['use_vardump']) && $settings['use_vardump']) {
             $defaultFlags |= self::USE_VARDUMP;
         }
@@ -109,37 +102,18 @@ class Debug
             $defaultFlags |= self::USE_HTMLENTITIES;
         }
 
-        if (isset($settings['logger']) && $settings['logger'] instanceof Logger) {
+        if (isset($settings['logger']) && $settings['logger'] instanceof LoggerInterface) {
             $Logger = $settings['logger'];
         } else {
             if (isset($settings['log_file'])) {
-                $Stream = self::initStream($settings['log_file']);
+                $Logger = new Logger($settings['log_file']);
             } else {
                 // We didn't get any file to log.
-                $Stream = new NullHandler(Logger::DEBUG);
+                $Logger = new Logger();
             }
-
-            $Logger = new Logger(self::CHANNEL_NAME);
-            $Logger->pushHandler($Stream);
         }
 
         self::$Instance = new static($defaultFlags, $Logger);
-    }
-
-    /**
-     * Create stream handler for logger.
-     *
-     * @param string  $logFile  The log file.
-     *
-     * @return StreamHandler
-     */
-    private static function initStream(string $logFile): StreamHandler
-    {
-        $Stream = new StreamHandler($logFile, Logger::DEBUG);
-        $Stream->setFormatter(
-            new LineFormatter(self::OUTPUT_FORMAT, self::DATE_FORMAT, true)
-        );
-        return $Stream;
     }
 
     /**
@@ -205,7 +179,7 @@ class Debug
      */
     public function logValue($var, int $flags = null)
     {
-        $this->Logger->addDebug(static::debugValue($var, $flags));
+        $this->Logger->debug(static::debugValue($var, $flags));
     }
 
     /**
