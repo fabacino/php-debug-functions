@@ -26,7 +26,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
             'log_file' => $logfile
         ]);
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = TestHelper::randomInt();
         dbglog($var);
 
         $this->assertRegExp(
@@ -42,7 +42,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
             'log_file' => $logfile
         ]);
 
-        $var = base64_encode(random_bytes(24));
+        $var = TestHelper::randomString();
         dbglog($var);
 
         $this->assertRegExp(
@@ -58,18 +58,10 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
             'log_file' => $logfile
         ]);
 
-        $var = ['first', 'second', 'third'];
+        $var = TestHelper::randomArray();
         dbglog($var);
 
-        $expected = <<<'EOT'
-Array
-(
-    [0] => first
-    [1] => second
-    [2] => third
-)
-
-EOT;
+        $expected = TestHelper::makeArrayOutput($var);
         $this->assertRegExp(
             TestHelper::makePattern($expected),
             file_get_contents($logfile)
@@ -83,7 +75,7 @@ EOT;
             'log_file' => null
         ]);
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = TestHelper::randomInt();
         dbglog($var);
 
         $this->assertEmpty(file_get_contents($logfile));
@@ -91,13 +83,12 @@ EOT;
 
     public function testLogNumberWithLogger()
     {
-        $fp = tmpfile();
-        $logfile = stream_get_meta_data($fp)['uri'];
+        $logfile = TestHelper::createTempFile();
         dbginit([
             'logger' => new Logger($logfile)
         ]);
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = TestHelper::randomInt();
         dbglog($var);
 
         $this->assertRegExp(
@@ -108,13 +99,12 @@ EOT;
 
     public function testLogStringWithLogger()
     {
-        $fp = tmpfile();
-        $logfile = stream_get_meta_data($fp)['uri'];
+        $logfile = TestHelper::createTempFile();
         dbginit([
             'logger' => new Logger($logfile)
         ]);
 
-        $var = base64_encode(random_bytes(24));
+        $var = TestHelper::randomString();
         dbglog($var);
 
         $this->assertRegExp(
@@ -125,24 +115,16 @@ EOT;
 
     public function testLogArrayWithLogger()
     {
-        $fp = tmpfile();
-        $logfile = stream_get_meta_data($fp)['uri'];
+        $logfile = TestHelper::createTempFile();
         dbginit([
             'logger' => new Logger($logfile)
         ]);
 
-        $var = ['first', 'second', 'third'];
+        $var = TestHelper::randomArray();
         dbglog($var);
 
-        $expected = <<<'EOT'
-Array
-(
-    [0] => first
-    [1] => second
-    [2] => third
-)
+        $expected = TestHelper::makeArrayOutput($var);
 
-EOT;
         $this->assertRegExp(
             TestHelper::makePattern($expected),
             file_get_contents($logfile)
@@ -151,14 +133,13 @@ EOT;
 
     public function testLogWithLoggerAndCustomDateFormat()
     {
-        $fp = tmpfile();
-        $logfile = stream_get_meta_data($fp)['uri'];
+        $logfile = TestHelper::createTempFile();
         $dateFormat = 'Y/m/d H/i/s';
         dbginit([
             'logger' => new Logger($logfile, $dateFormat)
         ]);
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = TestHelper::randomInt();
         dbglog($var);
 
         $this->assertRegExp(
@@ -169,13 +150,12 @@ EOT;
 
     public function testLogWithNoLogger()
     {
-        $fp = tmpfile();
-        $logfile = stream_get_meta_data($fp)['uri'];
+        $logfile = TestHelper::createTempFile();
         dbginit([
             'logger' => null
         ]);
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = TestHelper::randomInt();
         dbglog($var);
 
         $this->assertEmpty(file_get_contents($logfile));

@@ -18,44 +18,33 @@ class DbgTest extends \PHPUnit\Framework\TestCase
 {
     public function testPrintNumber()
     {
-        $var = 123;
-        $this->assertEquals('123', $this->captureOutput($var));
+        $var = TestHelper::randomInt();
+
+        $this->assertEquals($var, $this->captureOutput($var));
     }
 
     public function testPrintString()
     {
-        $var = 'some string';
+        $var = TestHelper::randomString();
+
         $this->assertEquals($var, $this->captureOutput($var));
     }
 
     public function testPrintArray()
     {
-        $var = ['first', 'second', 'third'];
-        $expected = <<<'EOT'
-Array
-(
-    [0] => first
-    [1] => second
-    [2] => third
-)
+        $var = TestHelper::randomArray();
+        $expected = TestHelper::makeArrayOutput($var);
 
-EOT;
         $this->assertEquals($expected, $this->captureOutput($var));
     }
 
     public function testPrintArrayNonCli()
     {
         TestDebug::init();
-        $var = ['first', 'second', 'third'];
-        $expected = <<<'EOT'
-<pre>Array
-(
-    [0] => first
-    [1] => second
-    [2] => third
-)
-</pre>
-EOT;
+
+        $var = TestHelper::randomArray();
+        $expected = '<pre>' . TestHelper::makeArrayOutput($var) . '</pre>';
+
         $this->assertEquals($expected, $this->captureOutput($var));
     }
 

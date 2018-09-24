@@ -20,35 +20,32 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
 {
     public function testDebugNumber()
     {
-        $var = 123;
-        $this->assertSame('123', dbgr($var));
+        $var = TestHelper::randomInt();
+
+        $this->assertEquals($var, dbgr($var));
     }
 
     public function testDebugString()
     {
-        $var = 'some string';
+        $var = TestHelper::randomString();
+
         $this->assertSame($var, dbgr($var));
     }
 
     public function testDebugArray()
     {
-        $var = ['first', 'second', 'third'];
-        $expected = <<<'EOT'
-Array
-(
-    [0] => first
-    [1] => second
-    [2] => third
-)
+        $var = TestHelper::randomArray();
+        $expected = TestHelper::makeArrayOutput($var);
 
-EOT;
         $this->assertEquals($expected, dbgr($var));
     }
 
     public function testDebugStringUsingVardumpByInit()
     {
         dbginit(['use_vardump' => true]);
-        $var = 'another string';
+
+        $var = TestHelper::randomString();
+
         $this->assertSame(
             $this->extractDumped($this->captureVardump($var), 'string'),
             $this->extractDumped(dbgr($var), 'string')
@@ -57,7 +54,8 @@ EOT;
 
     public function testDebugStringUsingVardumpByArg()
     {
-        $var = 'Some Third String';
+        $var = TestHelper::randomString();
+
         $this->assertSame(
             $this->extractDumped($this->captureVardump($var), 'string'),
             $this->extractDumped(dbgr($var, Debug::USE_VARDUMP), 'string')
@@ -67,13 +65,16 @@ EOT;
     public function testDebugStringUsingHtmlentitiesByInit()
     {
         dbginit(['use_htmlentities' => true]);
-        $var = '<b>Header<b>';
+
+        $var = '<b>' . TestHelper::randomInt() . '<b>';
+
         $this->assertSame(htmlentities($var), dbgr($var));
     }
 
     public function testDebugStringUsingHtmlentitiesByArg()
     {
-        $var = '<b>Footer<b>';
+        $var = '<b>' . TestHelper::randomInt() . '<b>';
+
         $this->assertSame(htmlentities($var), dbgr($var, Debug::USE_HTMLENTITIES));
     }
 
