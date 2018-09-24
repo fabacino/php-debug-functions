@@ -12,9 +12,7 @@
 namespace Fabacino\Debug\Test;
 
 use Fabacino\Debug\Debug;
-use Monolog\Logger;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\StreamHandler;
+use Fabacino\Debug\Logger;
 
 /**
  * Tests for function `dbglog`.
@@ -26,10 +24,20 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function testLogNumber()
+    public function testLogNumberWithLogFile()
     {
-        $this->initWithLogFile();
-        $this->execTestLogNumber();
+        $logfile = TestHelper::createTempFile();
+        dbginit([
+            'log_file' => $logfile
+        ]);
+
+        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        dbglog($var);
+
+        $this->assertRegExp(
+            TestHelper::makePattern($var),
+            file_get_contents($logfile)
+        );
     }
 
     /**
@@ -37,10 +45,20 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function testLogString()
+    public function testLogStringWithLogFile()
     {
-        $this->initWithLogFile();
-        $this->execTestLogString();
+        $logfile = TestHelper::createTempFile();
+        dbginit([
+            'log_file' => $logfile
+        ]);
+
+        $var = base64_encode(random_bytes(24));
+        dbglog($var);
+
+        $this->assertRegExp(
+            TestHelper::makePattern($var),
+            file_get_contents($logfile)
+        );
     }
 
     /**
@@ -48,75 +66,16 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function testLogArray()
+    public function testLogArrayWithLogFile()
     {
-        $this->initWithLogFile();
-        $this->execTestLogArray();
-    }
+        $logfile = TestHelper::createTempFile();
+        dbginit([
+            'log_file' => $logfile
+        ]);
 
-    /**
-     * Test printing number with logger.
-     *
-     * @return void
-     */
-    public function testLogNumberWithLogger()
-    {
-        $this->initWithLogger();
-        $this->execTestLogNumber();
-    }
-
-    /**
-     * Test printing string with logger.
-     *
-     * @return void
-     */
-    public function testLogStringWithLogger()
-    {
-        $this->initWithLogger();
-        $this->execTestLogString();
-    }
-
-    /**
-     * Test printing output with logger.
-     *
-     * @return void
-     */
-    public function testLogArrayWithLogger()
-    {
-        $this->initWithLogger();
-        $this->execTestLogArray();
-    }
-
-    /**
-     * Test printing number.
-     *
-     * @return void
-     */
-    private function execTestLogNumber()
-    {
-        $var = 123;
-        $this->assertRegExp($this->makePattern($var), $this->captureOutput($var));
-    }
-
-    /**
-     * Test printing string.
-     *
-     * @return void
-     */
-    private function execTestLogString()
-    {
-        $var = 'some string';
-        $this->assertRegExp($this->makePattern($var), $this->captureOutput($var));
-    }
-
-    /**
-     * Test printing output.
-     *
-     * @return void
-     */
-    private function execTestLogArray()
-    {
         $var = ['first', 'second', 'third'];
+        dbglog($var);
+
         $expected = <<<'EOT'
 Array
 (
@@ -126,75 +85,144 @@ Array
 )
 
 EOT;
-        $this->assertRegExp($this->makePattern($expected), $this->captureOutput($var));
-    }
-
-    /**
-     * Init debug settings with log file.
-     *
-     * @return void
-     */
-    private function initWithLogFile()
-    {
-        dbginit([
-            'log_file' => 'php://output'
-        ]);
-    }
-
-    /**
-     * Init debug settings with logger.
-     *
-     * @return void
-     */
-    private function initWithLogger()
-    {
-        $Stream = new StreamHandler('php://output', Logger::DEBUG);
-        $Stream->setFormatter(
-            new LineFormatter(Debug::OUTPUT_FORMAT, Debug::DATE_FORMAT, true)
+        $this->assertRegExp(
+            TestHelper::makePattern($expected),
+            file_get_contents($logfile)
         );
+    }
 
-        $Logger = new Logger(Debug::CHANNEL_NAME);
-        $Logger->pushHandler($Stream);
-
+    /**
+     * Test printing data with no log file.
+     *
+     * @return void
+     */
+    public function testLogWithNoLogFile()
+    {
+        $logfile = TestHelper::createTempFile();
         dbginit([
-            'logger' => $Logger,
+            'log_file' => null
         ]);
+
+        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        dbglog($var);
+
+        $this->assertEmpty(file_get_contents($logfile));
     }
 
     /**
-     * Capture and return output of function `dbglog`.
+     * Test printing number with logger.
      *
-     * @param mixed  $var    The variable to analyse.
-     * @param int    $flags  Flags for tweaking the output.
-     *
-     * @return string
+     * @return void
      */
-    private function captureOutput($var, int $flags = null)
+    public function testLogNumberWithLogger()
     {
-        ob_start();
-        dbglog($var, $flags);
-        $output = ob_get_contents();
-        ob_end_clean();
-        return $output;
+        $fp = tmpfile();
+        $logfile = stream_get_meta_data($fp)['uri'];
+        dbginit([
+            'logger' => new Logger($logfile)
+        ]);
+
+        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        dbglog($var);
+
+        $this->assertRegExp(
+            TestHelper::makePattern($var),
+            file_get_contents($logfile)
+        );
     }
 
     /**
-     * Make regexp pattern for variable.
+     * Test printing string with logger.
      *
-     * @param mixed  $var  The variable to analyse.
-     *
-     * @return string
+     * @return void
      */
-    private function makePattern($var)
+    public function testLogStringWithLogger()
     {
-        $search = [
-            '%datetime%',
-            '%message%'
-        ];
-        $replace = [
-            '\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}',
-            preg_quote($var, '/')
-        ];
-        return '/' . str_replace($search, $replace, Debug::OUTPUT_FORMAT) . '/';
+        $fp = tmpfile();
+        $logfile = stream_get_meta_data($fp)['uri'];
+        dbginit([
+            'logger' => new Logger($logfile)
+        ]);
+
+        $var = base64_encode(random_bytes(24));
+        dbglog($var);
+
+        $this->assertRegExp(
+            TestHelper::makePattern($var),
+            file_get_contents($logfile)
+        );
+    }
+
+    /**
+     * Test printing output with logger.
+     *
+     * @return void
+     */
+    public function testLogArrayWithLogger()
+    {
+        $fp = tmpfile();
+        $logfile = stream_get_meta_data($fp)['uri'];
+        dbginit([
+            'logger' => new Logger($logfile)
+        ]);
+
+        $var = ['first', 'second', 'third'];
+        dbglog($var);
+
+        $expected = <<<'EOT'
+Array
+(
+    [0] => first
+    [1] => second
+    [2] => third
+)
+
+EOT;
+        $this->assertRegExp(
+            TestHelper::makePattern($expected),
+            file_get_contents($logfile)
+        );
+    }
+
+    /**
+     * Test printing data with custom date format.
+     *
+     * @return void
+     */
+    public function testLogWithLoggerAndCustomDateFormat()
+    {
+        $fp = tmpfile();
+        $logfile = stream_get_meta_data($fp)['uri'];
+        $dateFormat = 'Y/m/d H/i/s';
+        dbginit([
+            'logger' => new Logger($logfile, $dateFormat)
+        ]);
+
+        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        dbglog($var);
+
+        $this->assertRegExp(
+            TestHelper::makePattern($var, $dateFormat),
+            file_get_contents($logfile)
+        );
+    }
+
+    /**
+     * Test printing data with no logger.
+     *
+     * @return void
+     */
+    public function testLogWithNoLogger()
+    {
+        $fp = tmpfile();
+        $logfile = stream_get_meta_data($fp)['uri'];
+        dbginit([
+            'logger' => null
+        ]);
+
+        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        dbglog($var);
+
+        $this->assertEmpty(file_get_contents($logfile));
     }
 }
