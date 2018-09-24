@@ -26,6 +26,42 @@ class TestHelper
     private static $fp;
 
     /**
+     * Generate a random int.
+     *
+     * @return int
+     */
+    public static function randomInt(): int
+    {
+        return random_int(PHP_INT_MIN, PHP_INT_MAX);
+    }
+
+    /**
+     * Generate a random string.
+     *
+     * @return string
+     */
+    public static function randomString(): string
+    {
+        $numChars = random_int(1, 340);
+        return substr(base64_encode(random_bytes(256)), 0, $numChars);
+    }
+
+    /**
+     * Generate a random array.
+     *
+     * @return array
+     */
+    public static function randomArray(): array
+    {
+        $entries = [];
+        $numEntries = random_int(5, 25);
+        while ($numEntries-- > 0) {
+            $entries[self::randomInt()] = self::randomString();
+        }
+        return $entries;
+    }
+
+    /**
      * Create temporary file.
      *
      * @return string
@@ -38,7 +74,7 @@ class TestHelper
     }
 
     /**
-     * Make regexp pattern for variable.
+     * Create regexp pattern for variable.
      *
      * @param mixed  $var  The variable to analyse.
      *
@@ -61,5 +97,32 @@ class TestHelper
             preg_quote($dateFormat, '/')
         );
         return '/' . $datePattern . ': ' . preg_quote($var, '/') . '/';
+    }
+
+    /**
+     * Create expected output for an array.
+     *
+     * @param array  $entries  The array to analyse.
+     *
+     * @return string
+     */
+    public static function makeArrayOutput(array $entries): string
+    {
+        $output = '';
+        foreach ($entries as $key => $value) {
+            $output .= <<<EOT
+    [{$key}] => {$value}
+
+EOT;
+        }
+        $output = rtrim($output);
+
+        return <<<EOT
+Array
+(
+{$output}
+)
+
+EOT;
     }
 }

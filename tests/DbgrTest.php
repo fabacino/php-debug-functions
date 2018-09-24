@@ -18,97 +18,63 @@ use Fabacino\Debug\Debug;
  */
 class DbgrTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * Test number output.
-     *
-     * @return void
-     */
     public function testDebugNumber()
     {
-        $var = 123;
-        $this->assertSame('123', dbgr($var));
+        $var = TestHelper::randomInt();
+
+        $this->assertEquals($var, dbgr($var));
     }
 
-    /**
-     * Test string output.
-     *
-     * @return void
-     */
     public function testDebugString()
     {
-        $var = 'some string';
+        $var = TestHelper::randomString();
+
         $this->assertSame($var, dbgr($var));
     }
 
-    /**
-     * Test array output.
-     *
-     * @return void
-     */
     public function testDebugArray()
     {
-        $var = ['first', 'second', 'third'];
-        $expected = <<<'EOT'
-Array
-(
-    [0] => first
-    [1] => second
-    [2] => third
-)
+        $var = TestHelper::randomArray();
+        $expected = TestHelper::makeArrayOutput($var);
 
-EOT;
         $this->assertEquals($expected, dbgr($var));
     }
 
-    /**
-     * Test string output setting vardump by init.
-     *
-     * @return void
-     */
     public function testDebugStringUsingVardumpByInit()
     {
         dbginit(['use_vardump' => true]);
-        $var = 'another string';
+
+        $var = TestHelper::randomString();
+
         $this->assertSame(
             $this->extractDumped($this->captureVardump($var), 'string'),
             $this->extractDumped(dbgr($var), 'string')
         );
     }
 
-    /**
-     * Test string output setting vardump by argument.
-     *
-     * @return void
-     */
     public function testDebugStringUsingVardumpByArg()
     {
-        $var = 'Some Third String';
+        $var = TestHelper::randomString();
+
         $this->assertSame(
             $this->extractDumped($this->captureVardump($var), 'string'),
             $this->extractDumped(dbgr($var, Debug::USE_VARDUMP), 'string')
         );
     }
 
-    /**
-     * Test string output setting htmlentities by init.
-     *
-     * @return void
-     */
     public function testDebugStringUsingHtmlentitiesByInit()
     {
         dbginit(['use_htmlentities' => true]);
-        $var = '<b>Header<b>';
+
+        $var = '<b>' . TestHelper::randomInt() . '<b>';
+
         $this->assertSame(htmlentities($var), dbgr($var));
     }
 
-    /**
-     * Test string output setting htmlentities by argument.
-     *
-     * @return void
-     */
     public function testDebugStringUsingHtmlentitiesByArg()
     {
-        $var = '<b>Footer<b>';
+        $var = '<b>' . TestHelper::randomInt() . '<b>';
+
         $this->assertSame(htmlentities($var), dbgr($var, Debug::USE_HTMLENTITIES));
     }
 
