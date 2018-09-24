@@ -18,34 +18,19 @@ use Fabacino\Debug\Debug;
  */
 class DbgThrowTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * Test printing number.
-     *
-     * @return void
-     */
     public function testThrowNumber()
     {
         $var = 123;
         $this->assertEquals($var, $this->captureException($var));
     }
 
-    /**
-     * Test printing string.
-     *
-     * @return void
-     */
     public function testThrowString()
     {
         $var = 'some string';
         $this->assertEquals($var, $this->captureException($var));
     }
 
-    /**
-     * Test printing output.
-     *
-     * @return void
-     */
-    public function testPrintArray()
+    public function testThrowArray()
     {
         $var = ['first', 'second', 'third'];
         $expected = <<<'EOT'

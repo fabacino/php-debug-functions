@@ -18,33 +18,18 @@ use Fabacino\Debug\Debug;
  */
 class DbgrTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * Test number output.
-     *
-     * @return void
-     */
     public function testDebugNumber()
     {
         $var = 123;
         $this->assertSame('123', dbgr($var));
     }
 
-    /**
-     * Test string output.
-     *
-     * @return void
-     */
     public function testDebugString()
     {
         $var = 'some string';
         $this->assertSame($var, dbgr($var));
     }
 
-    /**
-     * Test array output.
-     *
-     * @return void
-     */
     public function testDebugArray()
     {
         $var = ['first', 'second', 'third'];
@@ -60,11 +45,6 @@ EOT;
         $this->assertEquals($expected, dbgr($var));
     }
 
-    /**
-     * Test string output setting vardump by init.
-     *
-     * @return void
-     */
     public function testDebugStringUsingVardumpByInit()
     {
         dbginit(['use_vardump' => true]);
@@ -75,11 +55,6 @@ EOT;
         );
     }
 
-    /**
-     * Test string output setting vardump by argument.
-     *
-     * @return void
-     */
     public function testDebugStringUsingVardumpByArg()
     {
         $var = 'Some Third String';
@@ -89,11 +64,6 @@ EOT;
         );
     }
 
-    /**
-     * Test string output setting htmlentities by init.
-     *
-     * @return void
-     */
     public function testDebugStringUsingHtmlentitiesByInit()
     {
         dbginit(['use_htmlentities' => true]);
@@ -101,11 +71,6 @@ EOT;
         $this->assertSame(htmlentities($var), dbgr($var));
     }
 
-    /**
-     * Test string output setting htmlentities by argument.
-     *
-     * @return void
-     */
     public function testDebugStringUsingHtmlentitiesByArg()
     {
         $var = '<b>Footer<b>';

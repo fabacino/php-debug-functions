@@ -16,33 +16,18 @@ namespace Fabacino\Debug\Test;
  */
 class DbgTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * Test printing number.
-     *
-     * @return void
-     */
     public function testPrintNumber()
     {
         $var = 123;
         $this->assertEquals('123', $this->captureOutput($var));
     }
 
-    /**
-     * Test printing string.
-     *
-     * @return void
-     */
     public function testPrintString()
     {
         $var = 'some string';
         $this->assertEquals($var, $this->captureOutput($var));
     }
 
-    /**
-     * Test printing output.
-     *
-     * @return void
-     */
     public function testPrintArray()
     {
         $var = ['first', 'second', 'third'];
@@ -58,11 +43,6 @@ EOT;
         $this->assertEquals($expected, $this->captureOutput($var));
     }
 
-    /**
-     * Test printing output in non-CLI environment.
-     *
-     * @return void
-     */
     public function testPrintArrayNonCli()
     {
         TestDebug::init();

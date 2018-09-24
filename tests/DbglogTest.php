@@ -19,11 +19,6 @@ use Fabacino\Debug\Logger;
  */
 class DbglogTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * Test printing number with log file.
-     *
-     * @return void
-     */
     public function testLogNumberWithLogFile()
     {
         $logfile = TestHelper::createTempFile();
@@ -40,11 +35,6 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * Test printing string with log file.
-     *
-     * @return void
-     */
     public function testLogStringWithLogFile()
     {
         $logfile = TestHelper::createTempFile();
@@ -61,11 +51,6 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * Test printing output with log file.
-     *
-     * @return void
-     */
     public function testLogArrayWithLogFile()
     {
         $logfile = TestHelper::createTempFile();
@@ -91,11 +76,6 @@ EOT;
         );
     }
 
-    /**
-     * Test printing data with no log file.
-     *
-     * @return void
-     */
     public function testLogWithNoLogFile()
     {
         $logfile = TestHelper::createTempFile();
@@ -109,11 +89,6 @@ EOT;
         $this->assertEmpty(file_get_contents($logfile));
     }
 
-    /**
-     * Test printing number with logger.
-     *
-     * @return void
-     */
     public function testLogNumberWithLogger()
     {
         $fp = tmpfile();
@@ -131,11 +106,6 @@ EOT;
         );
     }
 
-    /**
-     * Test printing string with logger.
-     *
-     * @return void
-     */
     public function testLogStringWithLogger()
     {
         $fp = tmpfile();
@@ -153,11 +123,6 @@ EOT;
         );
     }
 
-    /**
-     * Test printing output with logger.
-     *
-     * @return void
-     */
     public function testLogArrayWithLogger()
     {
         $fp = tmpfile();
@@ -184,11 +149,6 @@ EOT;
         );
     }
 
-    /**
-     * Test printing data with custom date format.
-     *
-     * @return void
-     */
     public function testLogWithLoggerAndCustomDateFormat()
     {
         $fp = tmpfile();
@@ -207,11 +167,6 @@ EOT;
         );
     }
 
-    /**
-     * Test printing data with no logger.
-     *
-     * @return void
-     */
     public function testLogWithNoLogger()
     {
         $fp = tmpfile();
