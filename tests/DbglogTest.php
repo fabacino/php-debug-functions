@@ -29,7 +29,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomInt();
         dbglog($var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
@@ -45,7 +45,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomString();
         dbglog($var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
@@ -62,7 +62,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         dbglog($var);
 
         $expected = TestHelper::makeArrayOutput($var);
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($expected),
             file_get_contents($logfile)
         );
@@ -91,7 +91,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomInt();
         dbglog($var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
@@ -107,7 +107,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomString();
         dbglog($var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
@@ -125,7 +125,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
 
         $expected = TestHelper::makeArrayOutput($var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($expected),
             file_get_contents($logfile)
         );
@@ -142,7 +142,7 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomInt();
         dbglog($var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($var, $dateFormat),
             file_get_contents($logfile)
         );

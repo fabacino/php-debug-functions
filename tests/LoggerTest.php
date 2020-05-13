@@ -28,7 +28,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $Logger = new Logger($logfile);
         $Logger->debug($var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
@@ -43,7 +43,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $Logger = new Logger($logfile);
         $Logger->log(LogLevel::DEBUG, $var);
 
-        $this->assertRegExp(
+        $this->assertMatchesRegularExpression(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
