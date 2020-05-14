@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Debug functions" default="all">
+<project name="Debug functions" default="no-coverage">
 
-    <target name="all" depends="tests,analyse,cs"/>
+    <target name="all" depends="coverage,analyse,cs"/>
+
+    <target name="no-coverage" depends="tests,analyse,cs"/>
 
     <target name="tests">
 	<exec
@@ -9,7 +11,18 @@
 	    logoutput="true"
 	    passthru="true"
 	    checkreturn="true"
+	/>
+    </target>
+
+    <target name="coverage">
+	<exec
+	    executable="vendor/bin/phpunit"
+	    logoutput="true"
+	    passthru="true"
+	    checkreturn="true"
 	>
+	    <arg value="--coverage-clover"/>
+            <arg value="build/logs/clover.xml"/>
 	</exec>
     </target>
 
