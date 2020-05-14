@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the php-debug-functions package.
+ * This file is part of the fabacino/debug-functions package.
  *
  * (c) Fabian Wiget <fabacino@gmail.com>
  *
@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Fabacino\Debug\Test;
+namespace Fbn\Debug\Test;
 
 /**
  * Debug class for testing.
  */
-class TestDebug extends \Fabacino\Debug\Debug
+class TestDebug extends \Fbn\Debug\Debug
 {
     /**
      * Check whether we are in a CLI environment.

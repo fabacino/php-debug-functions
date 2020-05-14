@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the php-debug-functions package.
+ * This file is part of the fabacino/debug-functions package.
  *
  * (c) Fabian Wiget <fabacino@gmail.com>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Fabacino\Debug\Test;
+namespace Fbn\Debug\Test;
 
-use Fabacino\Debug\Logger;
+use Fbn\Debug\Logger;
 use Psr\Log\LogLevel;
 
 /**

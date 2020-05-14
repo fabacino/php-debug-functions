@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the php-debug-functions package.
+ * This file is part of the fabacino/debug-functions package.
  *
  * (c) Fabian Wiget <fabacino@gmail.com>
  *
@@ -13,7 +13,7 @@
  * Debug functions.
  */
 
-use Fabacino\Debug\Debug;
+use Fbn\Debug\Debug;
 
 /**
  * Initialize singleton instance.

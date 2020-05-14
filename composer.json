@@ -1,5 +1,5 @@
 {
-    "name": "fabacino/php-debug-functions",
+    "name": "fabacino/debug-functions",
     "description": "Debug functions for PHP",
     "type": "library",
     "license": "MIT",
@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Fabacino\\Debug\\": "src"
+            "Fbn\\Debug\\": "src"
         },
         "files": [
             "src/debug-functions.php"
@@ -31,7 +31,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Fabacino\\Debug\\Test\\": "tests"
+            "Fbn\\Debug\\Test\\": "tests"
         }
     }
 }
