@@ -9,9 +9,9 @@ A collection of simple debug functions which might be helpful in case a full-fle
 
 The following versions of PHP are supported:
 
-* PHP 7.0
-* PHP 7.1
 * PHP 7.2
+* PHP 7.3
+* PHP 7.4
 
 ## Installation
 
