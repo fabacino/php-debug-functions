@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Debug functions" default="all">
+
+    <target name="all" depends="tests"/>
+
+    <target name="tests">
+	<exec
+	    executable="vendor/bin/phpunit"
+	    logoutput="true"
+	    passthru="true"
+	    checkreturn="true"
+	>
+	</exec>
+    </target>
+
+</project>
