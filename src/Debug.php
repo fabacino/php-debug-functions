@@ -54,7 +54,7 @@ class Debug
      *
      * @return void
      */
-    private function __construct(int $defaultFlags, LoggerInterface $Logger)
+    final private function __construct(int $defaultFlags, LoggerInterface $Logger)
     {
         $this->defaultFlags = $defaultFlags;
         $this->Logger = $Logger;

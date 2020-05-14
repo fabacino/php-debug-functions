@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Debug functions" default="all">
 
-    <target name="all" depends="tests"/>
+    <target name="all" depends="tests,analyse"/>
 
     <target name="tests">
 	<exec
@@ -10,6 +10,19 @@
 	    passthru="true"
 	    checkreturn="true"
 	>
+	</exec>
+    </target>
+
+    <target name="analyse">
+	<exec
+	    executable="vendor/bin/phpstan"
+	    logoutput="true"
+	    passthru="true"
+	    checkreturn="true"
+	>
+	    <arg value="analyse"/>
+	    <arg value="-c"/>
+	    <arg path="phpstan.neon"/>
 	</exec>
     </target>
 

@@ -22,14 +22,14 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
     {
         $var = TestHelper::randomInt();
 
-        $this->assertEquals($var, dbgr($var));
+        self::assertEquals($var, dbgr($var));
     }
 
     public function testDebugString()
     {
         $var = TestHelper::randomString();
 
-        $this->assertSame($var, dbgr($var));
+        self::assertSame($var, dbgr($var));
     }
 
     public function testDebugArray()
@@ -37,7 +37,7 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomArray();
         $expected = TestHelper::makeArrayOutput($var);
 
-        $this->assertEquals($expected, dbgr($var));
+        self::assertEquals($expected, dbgr($var));
     }
 
     public function testDebugStringUsingVardumpByInit()
@@ -46,7 +46,7 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
 
         $var = TestHelper::randomString();
 
-        $this->assertSame(
+        self::assertSame(
             $this->extractDumped($this->captureVardump($var), 'string'),
             $this->extractDumped(dbgr($var), 'string')
         );
@@ -56,7 +56,7 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
     {
         $var = TestHelper::randomString();
 
-        $this->assertSame(
+        self::assertSame(
             $this->extractDumped($this->captureVardump($var), 'string'),
             $this->extractDumped(dbgr($var, Debug::USE_VARDUMP), 'string')
         );
@@ -68,14 +68,14 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
 
         $var = '<b>' . TestHelper::randomInt() . '<b>';
 
-        $this->assertSame(htmlentities($var), dbgr($var));
+        self::assertSame(htmlentities($var), dbgr($var));
     }
 
     public function testDebugStringUsingHtmlentitiesByArg()
     {
         $var = '<b>' . TestHelper::randomInt() . '<b>';
 
-        $this->assertSame(htmlentities($var), dbgr($var, Debug::USE_HTMLENTITIES));
+        self::assertSame(htmlentities($var), dbgr($var, Debug::USE_HTMLENTITIES));
     }
 
     /**

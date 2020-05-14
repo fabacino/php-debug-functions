@@ -22,14 +22,14 @@ class DbgThrowTest extends \PHPUnit\Framework\TestCase
     {
         $var = TestHelper::randomInt();
 
-        $this->assertEquals($var, $this->captureException($var));
+        self::assertEquals($var, $this->captureException($var));
     }
 
     public function testThrowString()
     {
         $var = TestHelper::randomString();
 
-        $this->assertEquals($var, $this->captureException($var));
+        self::assertEquals($var, $this->captureException($var));
     }
 
     public function testThrowArray()
@@ -37,7 +37,7 @@ class DbgThrowTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomArray();
         $expected = TestHelper::makeArrayOutput($var);
 
-        $this->assertEquals($expected, $this->captureException($var));
+        self::assertEquals($expected, $this->captureException($var));
     }
 
     /**

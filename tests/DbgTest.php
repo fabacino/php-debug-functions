@@ -20,14 +20,14 @@ class DbgTest extends \PHPUnit\Framework\TestCase
     {
         $var = TestHelper::randomInt();
 
-        $this->assertEquals($var, $this->captureOutput($var));
+        self::assertEquals($var, $this->captureOutput($var));
     }
 
     public function testPrintString()
     {
         $var = TestHelper::randomString();
 
-        $this->assertEquals($var, $this->captureOutput($var));
+        self::assertEquals($var, $this->captureOutput($var));
     }
 
     public function testPrintArray()
@@ -35,7 +35,7 @@ class DbgTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomArray();
         $expected = TestHelper::makeArrayOutput($var);
 
-        $this->assertEquals($expected, $this->captureOutput($var));
+        self::assertEquals($expected, $this->captureOutput($var));
     }
 
     public function testPrintArrayNonCli()
@@ -45,7 +45,7 @@ class DbgTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomArray();
         $expected = '<pre>' . TestHelper::makeArrayOutput($var) . '</pre>';
 
-        $this->assertEquals($expected, $this->captureOutput($var));
+        self::assertEquals($expected, $this->captureOutput($var));
     }
 
     /**

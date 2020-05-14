@@ -28,7 +28,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $Logger = new Logger($logfile);
         $Logger->debug($var);
 
-        $this->assertRegExp(
+        self::assertRegExp(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
@@ -43,7 +43,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $Logger = new Logger($logfile);
         $Logger->log(LogLevel::DEBUG, $var);
 
-        $this->assertRegExp(
+        self::assertRegExp(
             TestHelper::makePattern($var),
             file_get_contents($logfile)
         );
@@ -64,7 +64,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $Logger->notice($var);
         $Logger->info($var);
 
-        $this->assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(file_get_contents($logfile));
     }
 
     public function testReactionOnLogWithNonDebugLevel()
@@ -82,7 +82,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $Logger->log(LogLevel::NOTICE, $var);
         $Logger->log(LogLevel::INFO, $var);
 
-        $this->assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(file_get_contents($logfile));
     }
 
     public function testWithNoLogFile()
@@ -93,6 +93,6 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $Logger = new Logger();
         $Logger->debug($var);
 
-        $this->assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(file_get_contents($logfile));
     }
 }
