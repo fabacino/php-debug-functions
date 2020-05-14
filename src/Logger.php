@@ -22,7 +22,7 @@ class Logger implements LoggerInterface
     /**
      * Default date format.
      */
-    const DATE_FORMAT = 'Y-m-d H:i:s.u';
+    public const DATE_FORMAT = 'Y-m-d H:i:s.u';
 
     /**
      * Logfile.

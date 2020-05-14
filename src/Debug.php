@@ -22,8 +22,8 @@ class Debug
     /**
      * Available flags for tweaking the output.
      */
-    const USE_VARDUMP = 1;
-    const USE_HTMLENTITIES = 2;
+    public const USE_VARDUMP = 1;
+    public const USE_HTMLENTITIES = 2;
 
     /**
      * Default flags for tweaking the output.
@@ -37,27 +37,27 @@ class Debug
      *
      * @var LoggerInterface
      */
-    private $Logger;
+    private $logger;
 
     /**
      * Singleton instance.
      *
      * @var Debug
      */
-    private static $Instance;
+    private static $instance;
 
     /**
      * Constructor.
      *
      * @param int              $defaultFlags  Default flags for tweaking the output.
-     * @param LoggerInterface  $Logger        The logger instance.
+     * @param LoggerInterface  $logger        The logger instance.
      *
      * @return void
      */
-    final private function __construct(int $defaultFlags, LoggerInterface $Logger)
+    final private function __construct(int $defaultFlags, LoggerInterface $logger)
     {
         $this->defaultFlags = $defaultFlags;
-        $this->Logger = $Logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -67,10 +67,10 @@ class Debug
      */
     public static function getInstance(): Debug
     {
-        if (self::$Instance === null) {
+        if (self::$instance === null) {
             static::init();
         }
-        return self::$Instance;
+        return self::$instance;
     }
 
     /**
@@ -103,17 +103,17 @@ class Debug
         }
 
         if (isset($settings['logger']) && $settings['logger'] instanceof LoggerInterface) {
-            $Logger = $settings['logger'];
+            $logger = $settings['logger'];
         } else {
             if (isset($settings['log_file'])) {
-                $Logger = new Logger($settings['log_file']);
+                $logger = new Logger($settings['log_file']);
             } else {
                 // We didn't get any file to log.
-                $Logger = new Logger();
+                $logger = new Logger();
             }
         }
 
-        self::$Instance = new static($defaultFlags, $Logger);
+        self::$instance = new static($defaultFlags, $logger);
     }
 
     /**
@@ -179,7 +179,7 @@ class Debug
      */
     public function logValue($var, int $flags = null)
     {
-        $this->Logger->debug(static::debugValue($var, $flags));
+        $this->logger->debug(static::debugValue($var, $flags));
     }
 
     /**

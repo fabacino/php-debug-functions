@@ -52,8 +52,8 @@ class DbgThrowTest extends \PHPUnit\Framework\TestCase
     {
         try {
             dbgthrow($var, $flags);
-        } catch (\Exception $Exception) {
-            return $Exception->getMessage();
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
         }
         return null;
     }

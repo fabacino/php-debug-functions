@@ -25,8 +25,8 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
 
-        $Logger = new Logger($logfile);
-        $Logger->debug($var);
+        $logger = new Logger($logfile);
+        $logger->debug($var);
 
         self::assertRegExp(
             TestHelper::makePattern($var),
@@ -40,8 +40,8 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
 
-        $Logger = new Logger($logfile);
-        $Logger->log(LogLevel::DEBUG, $var);
+        $logger = new Logger($logfile);
+        $logger->log(LogLevel::DEBUG, $var);
 
         self::assertRegExp(
             TestHelper::makePattern($var),
@@ -55,14 +55,14 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
 
-        $Logger = new Logger($logfile);
-        $Logger->emergency($var);
-        $Logger->alert($var);
-        $Logger->critical($var);
-        $Logger->error($var);
-        $Logger->warning($var);
-        $Logger->notice($var);
-        $Logger->info($var);
+        $logger = new Logger($logfile);
+        $logger->emergency($var);
+        $logger->alert($var);
+        $logger->critical($var);
+        $logger->error($var);
+        $logger->warning($var);
+        $logger->notice($var);
+        $logger->info($var);
 
         self::assertEmpty(file_get_contents($logfile));
     }
@@ -73,14 +73,14 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
 
         $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
 
-        $Logger = new Logger($logfile);
-        $Logger->log(LogLevel::EMERGENCY, $var);
-        $Logger->log(LogLevel::ALERT, $var);
-        $Logger->log(LogLevel::CRITICAL, $var);
-        $Logger->log(LogLevel::ERROR, $var);
-        $Logger->log(LogLevel::WARNING, $var);
-        $Logger->log(LogLevel::NOTICE, $var);
-        $Logger->log(LogLevel::INFO, $var);
+        $logger = new Logger($logfile);
+        $logger->log(LogLevel::EMERGENCY, $var);
+        $logger->log(LogLevel::ALERT, $var);
+        $logger->log(LogLevel::CRITICAL, $var);
+        $logger->log(LogLevel::ERROR, $var);
+        $logger->log(LogLevel::WARNING, $var);
+        $logger->log(LogLevel::NOTICE, $var);
+        $logger->log(LogLevel::INFO, $var);
 
         self::assertEmpty(file_get_contents($logfile));
     }
@@ -90,8 +90,8 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $logfile = TestHelper::createTempFile();
 
         $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
-        $Logger = new Logger();
-        $Logger->debug($var);
+        $logger = new Logger();
+        $logger->debug($var);
 
         self::assertEmpty(file_get_contents($logfile));
     }

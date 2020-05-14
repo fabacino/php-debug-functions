@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Debug functions" default="all">
 
-    <target name="all" depends="tests,analyse"/>
+    <target name="all" depends="tests,analyse,cs"/>
 
     <target name="tests">
 	<exec
@@ -24,6 +24,15 @@
 	    <arg value="-c"/>
 	    <arg path="phpstan.neon"/>
 	</exec>
+    </target>
+
+    <target name="cs">
+	<exec
+	    executable="vendor/bin/phpcs"
+	    logoutput="true"
+	    passthru="true"
+	    checkreturn="true"
+	/>
     </target>
 
 </project>
