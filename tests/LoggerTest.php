@@ -14,46 +14,43 @@ namespace Fbn\Debug\Test;
 use Fbn\Debug\Logger;
 use Psr\Log\LogLevel;
 
-/**
- * Tests for the simple logger.
- */
 class LoggerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testReactionOnDebug()
+    public function testReactionOnDebug(): void
     {
         $logfile = TestHelper::createTempFile();
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = (string)random_int(PHP_INT_MIN, PHP_INT_MAX);
 
         $logger = new Logger($logfile);
         $logger->debug($var);
 
         self::assertRegExp(
             TestHelper::makePattern($var),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testReactionOnLogWithDebugLevel()
+    public function testReactionOnLogWithDebugLevel(): void
     {
         $logfile = TestHelper::createTempFile();
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = (string)random_int(PHP_INT_MIN, PHP_INT_MAX);
 
         $logger = new Logger($logfile);
         $logger->log(LogLevel::DEBUG, $var);
 
         self::assertRegExp(
             TestHelper::makePattern($var),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testReactionOnNonDebug()
+    public function testReactionOnNonDebug(): void
     {
         $logfile = TestHelper::createTempFile();
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = (string)random_int(PHP_INT_MIN, PHP_INT_MAX);
 
         $logger = new Logger($logfile);
         $logger->emergency($var);
@@ -64,14 +61,14 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $logger->notice($var);
         $logger->info($var);
 
-        self::assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(TestHelper::readLogfile($logfile));
     }
 
-    public function testReactionOnLogWithNonDebugLevel()
+    public function testReactionOnLogWithNonDebugLevel(): void
     {
         $logfile = TestHelper::createTempFile();
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = (string)random_int(PHP_INT_MIN, PHP_INT_MAX);
 
         $logger = new Logger($logfile);
         $logger->log(LogLevel::EMERGENCY, $var);
@@ -82,17 +79,18 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
         $logger->log(LogLevel::NOTICE, $var);
         $logger->log(LogLevel::INFO, $var);
 
-        self::assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(TestHelper::readLogfile($logfile));
     }
 
-    public function testWithNoLogFile()
+    public function testWithNoLogFile(): void
     {
         $logfile = TestHelper::createTempFile();
 
-        $var = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        $var = (string)random_int(PHP_INT_MIN, PHP_INT_MAX);
+
         $logger = new Logger();
         $logger->debug($var);
 
-        self::assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(TestHelper::readLogfile($logfile));
     }
 }

@@ -14,9 +14,6 @@ namespace Fbn\Debug;
 use Fbn\Debug\Logger;
 use Psr\Log\LoggerInterface;
 
-/**
- * Main class.
- */
 class Debug
 {
     /**
@@ -33,8 +30,6 @@ class Debug
     private $defaultFlags;
 
     /**
-     * The logger instance.
-     *
      * @var LoggerInterface
      */
     private $logger;
@@ -47,23 +42,19 @@ class Debug
     private static $instance;
 
     /**
-     * Constructor.
-     *
-     * @param int              $defaultFlags  Default flags for tweaking the output.
-     * @param LoggerInterface  $logger        The logger instance.
-     *
-     * @return void
+     * @param int $defaultFlags Default flags for tweaking the output.
+     * @param LoggerInterface $logger
      */
-    final private function __construct(int $defaultFlags, LoggerInterface $logger)
-    {
+    final private function __construct(
+        int $defaultFlags,
+        LoggerInterface $logger
+    ) {
         $this->defaultFlags = $defaultFlags;
         $this->logger = $logger;
     }
 
     /**
      * Get singleton instance.
-     *
-     * @return Debug
      */
     public static function getInstance(): Debug
     {
@@ -87,22 +78,28 @@ class Debug
      * If `logger` is specified, `log_file` will be ignored. If neither is present,
      * nothing will be logged.
      *
-     * @param array  $settings  Settings.
-     *
-     * @return void
+     * @param array<string,mixed> $settings
      */
-    public static function init(array $settings = [])
+    public static function init(array $settings = []): void
     {
         $defaultFlags = 0;
-
-        if (isset($settings['use_vardump']) && $settings['use_vardump']) {
+        if (
+            isset($settings['use_vardump'])
+            && $settings['use_vardump'] === true
+        ) {
             $defaultFlags |= self::USE_VARDUMP;
         }
-        if (isset($settings['use_htmlentities']) && $settings['use_htmlentities']) {
+        if (
+            isset($settings['use_htmlentities'])
+            && $settings['use_htmlentities'] === true
+        ) {
             $defaultFlags |= self::USE_HTMLENTITIES;
         }
 
-        if (isset($settings['logger']) && $settings['logger'] instanceof LoggerInterface) {
+        if (
+            isset($settings['logger'])
+            && $settings['logger'] instanceof LoggerInterface
+        ) {
             $logger = $settings['logger'];
         } else {
             if (isset($settings['log_file'])) {
@@ -117,14 +114,12 @@ class Debug
     }
 
     /**
-     * Print debug value
+     * Print debug value.
      *
-     * @param mixed     $var    The variable to analyse.
-     * @param int|null  $flags  Flags for tweaking the output.
-     *
-     * @return void
+     * @param mixed $var The variable to analyse.
+     * @param int|null $flags Flags for tweaking the output.
      */
-    public function printValue($var, int $flags = null)
+    public function printValue($var, ?int $flags = null): void
     {
         if ($flags === null) {
             $flags = $this->defaultFlags;
@@ -140,12 +135,11 @@ class Debug
     /**
      * Return debug value.
      *
-     * @param mixed     $var    The variable to analyse.
-     * @param int|null  $flags  Flags for tweaking the output.
-     *
+     * @param mixed $var The variable to analyse.
+     * @param int|null $flags Flags for tweaking the output.
      * @return mixed
      */
-    public function debugValue($var, int $flags = null)
+    public function debugValue($var, ?int $flags = null)
     {
         if ($flags === null) {
             $flags = $this->defaultFlags;
@@ -162,6 +156,12 @@ class Debug
         $output = ob_get_contents();
         ob_end_clean();
 
+        if ($output === false) {
+            throw new \UnexpectedValueException(
+                'Unable to get debug value of variable'
+            );
+        }
+
         if (($flags & self::USE_HTMLENTITIES) === self::USE_HTMLENTITIES) {
             $output = htmlentities($output, ENT_NOQUOTES);
         }
@@ -172,20 +172,16 @@ class Debug
     /**
      * Log debug value.
      *
-     * @param mixed     $var    The variable to analyse.
-     * @param int|null  $flags  Flags for tweaking the output.
-     *
-     * @return mixed
+     * @param mixed $var The variable to analyse.
+     * @param int|null $flags Flags for tweaking the output.
      */
-    public function logValue($var, int $flags = null)
+    public function logValue($var, ?int $flags = null): void
     {
         $this->logger->debug(static::debugValue($var, $flags));
     }
 
     /**
      * Check whether we are in a CLI environment.
-     *
-     * @return bool
      */
     protected function isCli(): bool
     {

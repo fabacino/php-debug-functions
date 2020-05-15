@@ -9,34 +9,26 @@
  * file that was distributed with this source code.
  */
 
-/**
- * Debug functions.
- */
-
 use Fbn\Debug\Debug;
 
 /**
  * Initialize singleton instance.
  *
- * @param array  $settings  Settings.
- *
- * @return void
- * @see    Debug::init()
+ * @param array<string,mixed> $settings
+ * @see Debug::init()
  */
-function dbginit(array $settings = [])
+function dbginit(array $settings = []): void
 {
     Debug::init($settings);
 }
 
 /**
- * Print debug value
+ * Print debug value.
  *
- * @param mixed     $var    The variable to analyse.
- * @param int|null  $flags  Flags for tweaking the output.
- *
- * @return void
+ * @param mixed $var The variable to analyse.
+ * @param int|null $flags Flags for tweaking the output.
  */
-function dbg($var, int $flags = null)
+function dbg($var, ?int $flags = null): void
 {
     Debug::getInstance()->printValue($var, $flags);
 }
@@ -44,12 +36,11 @@ function dbg($var, int $flags = null)
 /**
  * Return debug value.
  *
- * @param mixed     $var    The variable to analyse.
- * @param int|null  $flags  Flags for tweaking the output.
- *
+ * @param mixed $var The variable to analyse.
+ * @param int|null $flags Flags for tweaking the output.
  * @return mixed
  */
-function dbgr($var, int $flags = null)
+function dbgr($var, ?int $flags = null)
 {
     return Debug::getInstance()->debugValue($var, $flags);
 }
@@ -57,12 +48,10 @@ function dbgr($var, int $flags = null)
 /**
  * Log debug value.
  *
- * @param mixed     $var    The variable to analyse.
- * @param int|null  $flags  Flags for tweaking the output.
- *
- * @return void
+ * @param mixed $var The variable to analyse.
+ * @param int|null $flags Flags for tweaking the output.
  */
-function dbglog($var, int $flags = null)
+function dbglog($var, int $flags = null): void
 {
     Debug::getInstance()->logValue($var, $flags);
 }
@@ -70,13 +59,11 @@ function dbglog($var, int $flags = null)
 /**
  * Print debug value and die.
  *
- * @param mixed     $var    The variable to analyse.
- * @param int|null  $flags  Flags for tweaking the output.
- *
- * @return void
+ * @param mixed $var The variable to analyse.
+ * @param int|null $flags Flags for tweaking the output.
  * @codeCoverageIgnore
  */
-function dbgdie($var, int $flags = null)
+function dbgdie($var, ?int $flags = null): void
 {
     dbg($var, $flags);
     exit;
@@ -85,12 +72,10 @@ function dbgdie($var, int $flags = null)
 /**
  * Throw exception with debug value.
  *
- * @param mixed     $var    The variable to analyse.
- * @param int|null  $flags  Flags for tweaking the output.
- *
- * @return void
+ * @param mixed $var The variable to analyse.
+ * @param int|null $flags Flags for tweaking the output.
  */
-function dbgthrow($var, int $flags = null)
+function dbgthrow($var, int $flags = null): void
 {
     throw new \Exception(dbgr($var, $flags));
 }

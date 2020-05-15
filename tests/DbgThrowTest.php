@@ -13,26 +13,23 @@ namespace Fbn\Debug\Test;
 
 use Fbn\Debug\Debug;
 
-/**
- * Tests for function `dbgthrow`.
- */
 class DbgThrowTest extends \PHPUnit\Framework\TestCase
 {
-    public function testThrowNumber()
+    public function testThrowNumber(): void
     {
         $var = TestHelper::randomInt();
 
         self::assertEquals($var, $this->captureException($var));
     }
 
-    public function testThrowString()
+    public function testThrowString(): void
     {
         $var = TestHelper::randomString();
 
         self::assertEquals($var, $this->captureException($var));
     }
 
-    public function testThrowArray()
+    public function testThrowArray(): void
     {
         $var = TestHelper::randomArray();
         $expected = TestHelper::makeArrayOutput($var);
@@ -43,18 +40,17 @@ class DbgThrowTest extends \PHPUnit\Framework\TestCase
     /**
      * Capture and return output of function `dbg`.
      *
-     * @param mixed  $var    The variable to analyse.
-     * @param int    $flags  Flags for tweaking the output.
-     *
-     * @return string|null
+     * @param mixed $var The variable to analyse.
+     * @param int|null $flags Flags for tweaking the output.
      */
-    private function captureException($var, int $flags = null)
+    private function captureException($var, ?int $flags = null): ?string
     {
         try {
             dbgthrow($var, $flags);
         } catch (\Exception $exception) {
             return $exception->getMessage();
         }
+
         return null;
     }
 }

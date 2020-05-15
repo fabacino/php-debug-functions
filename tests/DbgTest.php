@@ -11,26 +11,23 @@
 
 namespace Fbn\Debug\Test;
 
-/**
- * Tests for function `dbg`.
- */
 class DbgTest extends \PHPUnit\Framework\TestCase
 {
-    public function testPrintNumber()
+    public function testPrintNumber(): void
     {
         $var = TestHelper::randomInt();
 
         self::assertEquals($var, $this->captureOutput($var));
     }
 
-    public function testPrintString()
+    public function testPrintString(): void
     {
         $var = TestHelper::randomString();
 
         self::assertEquals($var, $this->captureOutput($var));
     }
 
-    public function testPrintArray()
+    public function testPrintArray(): void
     {
         $var = TestHelper::randomArray();
         $expected = TestHelper::makeArrayOutput($var);
@@ -38,7 +35,7 @@ class DbgTest extends \PHPUnit\Framework\TestCase
         self::assertEquals($expected, $this->captureOutput($var));
     }
 
-    public function testPrintArrayNonCli()
+    public function testPrintArrayNonCli(): void
     {
         TestDebug::init();
 
@@ -51,17 +48,20 @@ class DbgTest extends \PHPUnit\Framework\TestCase
     /**
      * Capture and return output of function `dbg`.
      *
-     * @param mixed  $var    The variable to analyse.
-     * @param int    $flags  Flags for tweaking the output.
-     *
-     * @return string
+     * @param mixed $var The variable to analyse.
+     * @param int|null $flags Flags for tweaking the output.
      */
-    private function captureOutput($var, int $flags = null)
+    private function captureOutput($var, ?int $flags = null): string
     {
         ob_start();
         dbg($var, $flags);
         $output = ob_get_contents();
         ob_end_clean();
+
+        if ($output === false) {
+            throw new \UnexpectedValueException('Unable to capture output');
+        }
+
         return $output;
     }
 }

@@ -18,8 +18,6 @@ class TestDebug extends \Fbn\Debug\Debug
 {
     /**
      * Check whether we are in a CLI environment.
-     *
-     * @return bool
      */
     protected function isCli(): bool
     {

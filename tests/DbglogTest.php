@@ -14,12 +14,9 @@ namespace Fbn\Debug\Test;
 use Fbn\Debug\Debug;
 use Fbn\Debug\Logger;
 
-/**
- * Tests for function `dbglog`.
- */
 class DbglogTest extends \PHPUnit\Framework\TestCase
 {
-    public function testLogNumberWithLogFile()
+    public function testLogNumberWithLogFile(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -31,11 +28,11 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
 
         self::assertRegExp(
             TestHelper::makePattern($var),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testLogStringWithLogFile()
+    public function testLogStringWithLogFile(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -47,11 +44,11 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
 
         self::assertRegExp(
             TestHelper::makePattern($var),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testLogArrayWithLogFile()
+    public function testLogArrayWithLogFile(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -64,11 +61,11 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $expected = TestHelper::makeArrayOutput($var);
         self::assertRegExp(
             TestHelper::makePattern($expected),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testLogWithNoLogFile()
+    public function testLogWithNoLogFile(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -78,10 +75,10 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomInt();
         dbglog($var);
 
-        self::assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(TestHelper::readLogfile($logfile));
     }
 
-    public function testLogNumberWithLogger()
+    public function testLogNumberWithLogger(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -93,11 +90,11 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
 
         self::assertRegExp(
             TestHelper::makePattern($var),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testLogStringWithLogger()
+    public function testLogStringWithLogger(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -109,11 +106,11 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
 
         self::assertRegExp(
             TestHelper::makePattern($var),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testLogArrayWithLogger()
+    public function testLogArrayWithLogger(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -127,11 +124,11 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
 
         self::assertRegExp(
             TestHelper::makePattern($expected),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testLogWithLoggerAndCustomDateFormat()
+    public function testLogWithLoggerAndCustomDateFormat(): void
     {
         $logfile = TestHelper::createTempFile();
         $dateFormat = 'Y/m/d H/i/s';
@@ -144,11 +141,11 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
 
         self::assertRegExp(
             TestHelper::makePattern($var, $dateFormat),
-            file_get_contents($logfile)
+            TestHelper::readLogfile($logfile)
         );
     }
 
-    public function testLogWithNoLogger()
+    public function testLogWithNoLogger(): void
     {
         $logfile = TestHelper::createTempFile();
         dbginit([
@@ -158,6 +155,6 @@ class DbglogTest extends \PHPUnit\Framework\TestCase
         $var = TestHelper::randomInt();
         dbglog($var);
 
-        self::assertEmpty(file_get_contents($logfile));
+        self::assertEmpty(TestHelper::readLogfile($logfile));
     }
 }

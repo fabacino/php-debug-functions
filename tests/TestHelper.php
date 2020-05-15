@@ -13,9 +13,6 @@ namespace Fbn\Debug\Test;
 
 use Fbn\Debug\Logger;
 
-/**
- * Some helpger functions for tests.
- */
 class TestHelper
 {
     /**
@@ -27,8 +24,6 @@ class TestHelper
 
     /**
      * Generate a random int.
-     *
-     * @return int
      */
     public static function randomInt(): int
     {
@@ -37,8 +32,6 @@ class TestHelper
 
     /**
      * Generate a random string.
-     *
-     * @return string
      */
     public static function randomString(): string
     {
@@ -49,39 +42,50 @@ class TestHelper
     /**
      * Generate a random array.
      *
-     * @return array
+     * @return array<int,string>
      */
     public static function randomArray(): array
     {
-        $entries = [];
         $numEntries = random_int(5, 25);
-        while ($numEntries-- > 0) {
+
+        $entries = [];
+        do {
             $entries[self::randomInt()] = self::randomString();
-        }
+        } while (--$numEntries > 0);
+
+        // Probably a bug in phpstan, the following error is reported:
+        // Unreachable statement - code above always terminates.
+        /** @phpstan-ignore-next-line */
         return $entries;
     }
 
     /**
      * Create temporary file.
-     *
-     * @return string
      */
     public static function createTempFile(): string
     {
-        // Keep the file pointer around, otherwise the temp file gets deleted too soon.
-        self::$fp = tmpfile();
+        // Keep the file pointer around, otherwise the temp file gets
+        // deleted too soon.
+        $fp = tmpfile();
+        if ($fp === false) {
+            throw new \UnexpectedValueException(
+                'Unable to generate temporary file'
+            );
+        }
+
+        self::$fp = $fp;
         return stream_get_meta_data(self::$fp)['uri'];
     }
 
     /**
      * Create regexp pattern for variable.
      *
-     * @param mixed  $var  The variable to analyse.
-     *
-     * @return string
+     * @param mixed $var The variable to analyse.
      */
-    public static function makePattern($var, string $dateFormat = Logger::DATE_FORMAT): string
-    {
+    public static function makePattern(
+        $var,
+        string $dateFormat = Logger::DATE_FORMAT
+    ): string {
         $replace = [
             'd' => '\d{2}',
             'm' => '\d{2}',
@@ -91,20 +95,20 @@ class TestHelper
             's' => '\d{2}',
             'u' => '\d+',
         ];
+
         $datePattern = str_replace(
             array_keys($replace),
             array_values($replace),
             preg_quote($dateFormat, '/')
         );
-        return '/' . $datePattern . ': ' . preg_quote($var, '/') . '/';
+
+        return "/{$datePattern}: " . preg_quote($var, '/') . '/';
     }
 
     /**
      * Create expected output for an array.
      *
-     * @param array  $entries  The array to analyse.
-     *
-     * @return string
+     * @param mixed[] $entries The array to analyse.
      */
     public static function makeArrayOutput(array $entries): string
     {
@@ -124,5 +128,21 @@ Array
 )
 
 EOT;
+    }
+
+    /**
+     * Read logfile contents.
+     */
+    public static function readLogfile(string $logfile): string
+    {
+        $contents = file_get_contents($logfile);
+
+        if ($contents === false) {
+            throw new \UnexpectedValueException(
+                "Unable to read log file: `{$logfile}`"
+            );
+        }
+
+        return $contents;
     }
 }

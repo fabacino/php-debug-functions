@@ -13,26 +13,23 @@ namespace Fbn\Debug\Test;
 
 use Fbn\Debug\Debug;
 
-/**
- * Tests for function `dbgr`.
- */
 class DbgrTest extends \PHPUnit\Framework\TestCase
 {
-    public function testDebugNumber()
+    public function testDebugNumber(): void
     {
         $var = TestHelper::randomInt();
 
         self::assertEquals($var, dbgr($var));
     }
 
-    public function testDebugString()
+    public function testDebugString(): void
     {
         $var = TestHelper::randomString();
 
         self::assertSame($var, dbgr($var));
     }
 
-    public function testDebugArray()
+    public function testDebugArray(): void
     {
         $var = TestHelper::randomArray();
         $expected = TestHelper::makeArrayOutput($var);
@@ -40,7 +37,7 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
         self::assertEquals($expected, dbgr($var));
     }
 
-    public function testDebugStringUsingVardumpByInit()
+    public function testDebugStringUsingVardumpByInit(): void
     {
         dbginit(['use_vardump' => true]);
 
@@ -52,7 +49,7 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDebugStringUsingVardumpByArg()
+    public function testDebugStringUsingVardumpByArg(): void
     {
         $var = TestHelper::randomString();
 
@@ -62,7 +59,7 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testDebugStringUsingHtmlentitiesByInit()
+    public function testDebugStringUsingHtmlentitiesByInit(): void
     {
         dbginit(['use_htmlentities' => true]);
 
@@ -71,7 +68,7 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
         self::assertSame(htmlentities($var), dbgr($var));
     }
 
-    public function testDebugStringUsingHtmlentitiesByArg()
+    public function testDebugStringUsingHtmlentitiesByArg(): void
     {
         $var = '<b>' . TestHelper::randomInt() . '<b>';
 
@@ -81,28 +78,29 @@ class DbgrTest extends \PHPUnit\Framework\TestCase
     /**
      * Capture and return output of function `var_dump`.
      *
-     * @param mixed  $var  The variable to analyse.
-     *
-     * @return string
+     * @param mixed $var The variable to analyse.
      */
-    private function captureVardump($var)
+    private function captureVardump($var): string
     {
         ob_start();
         var_dump($var);
         $output = ob_get_contents();
         ob_end_clean();
+
+        if ($output === false) {
+            throw new \UnexpectedValueException('Unable to capture output');
+        }
+
         return $output;
     }
 
     /**
      * Extract relevant information from vardump output.
      *
-     * @param string  $output  The vardump output.
-     * @param string  $start   The string the relevant info starts with.
-     *
-     * @return string
+     * @param string $output The vardump output.
+     * @param string $start The string the relevant info starts with.
      */
-    private function extractDumped(string $output, string $start)
+    private function extractDumped(string $output, string $start): string
     {
         $pos = strpos($output, $start);
         return $pos !== false ? substr($output, $pos) : $output;

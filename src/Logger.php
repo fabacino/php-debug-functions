@@ -26,27 +26,19 @@ final class Logger extends AbstractLogger
     public const DATE_FORMAT = 'Y-m-d H:i:s.u';
 
     /**
-     * Logfile.
-     *
      * @var string|null
      */
     private $logfile;
 
     /**
-     * Date format.
-     *
      * @var string
      * @see DATE_FORMAT
      */
     private $dateFormat;
 
     /**
-     * Constructor.
-     *
-     * @param string|null  $logfile     The log file.
-     * @param string       $dateFormat  The date format.
-     *
-     * @return void
+     * @param string|null $logfile
+     * @param string $dateFormat
      */
     public function __construct(
         string $logfile = null,
@@ -59,13 +51,11 @@ final class Logger extends AbstractLogger
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed  $level
+     * @param mixed $level
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
+     * @param mixed[] $context
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         if ($level !== LogLevel::DEBUG || $this->logfile == null) {
             return;
