@@ -112,22 +112,31 @@ class TestHelper
      */
     public static function makeArrayOutput(array $entries): string
     {
-        $output = '';
-        foreach ($entries as $key => $value) {
-            $output .= <<<EOT
-    [{$key}] => {$value}
-
-EOT;
-        }
-        $output = rtrim($output);
-
-        return <<<EOT
+        $output = preg_replace('/\R/', "\n", str_replace(
+            '{{entries}}',
+            implode(PHP_EOL, array_map(
+                function ($key, $value): string {
+                    return "    [{$key}] => {$value}";
+                },
+                array_keys($entries),
+                array_values($entries)
+            )),
+            <<<'EOT'
 Array
 (
-{$output}
+{{entries}}
 )
 
-EOT;
+EOT
+        ));
+
+        if ($output === null) {
+            throw new \UnexpectedValueException(
+                'Error while replacing newlines in array output'
+            );
+        }
+
+        return $output;
     }
 
     /**
