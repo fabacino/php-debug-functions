@@ -15,7 +15,9 @@ The following versions of PHP are supported:
 
 ## Installation
 
-TODO
+```
+composer install --dev fabacino/debug-functions
+```
 
 ## Usage
 
